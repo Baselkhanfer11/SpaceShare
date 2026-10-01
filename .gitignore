@@ -1,0 +1,46 @@
+# ─────────────────────────────────────────────
+#  .NET / C# (backend)
+# ─────────────────────────────────────────────
+bin/
+obj/
+*.user
+*.suo
+.vs/
+[Dd]ebug/
+[Rr]elease/
+TestResults/
+
+# Uploaded photos live in blob storage / on disk, not in git.
+**/Storage/uploads/
+
+# ─────────────────────────────────────────────
+#  Node / Bun / Vite (frontend)
+# ─────────────────────────────────────────────
+node_modules/
+dist/
+dist-ssr/
+*.local
+.vite/
+*.log
+
+# Bun
+# (bun.lock IS committed on purpose — it locks dependency versions)
+
+# ─────────────────────────────────────────────
+#  Environment & secrets — NEVER commit these
+#  (local secrets go in `dotnet user-secrets`, which lives outside the repo)
+# ─────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+appsettings.*.local.json
+
+# ─────────────────────────────────────────────
+#  Editors / OS
+# ─────────────────────────────────────────────
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+Thumbs.db
+.DS_Store
