@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { adminApi } from '../api/endpoints';
 import { CheckIcon, PauseIcon, PlayIcon, XIcon } from '../components/icons';
-import { Modal } from '../components/Modal';
+import { ReasonModal } from '../components/Dialogs';
 import { useToast } from '../components/Toast';
 import { useI18n } from '../i18n/LanguageContext';
 import { formatDate } from '../lib/format';
@@ -124,8 +124,11 @@ export function AdminOrganizationsPage() {
       </section>
 
       {noteAction && (
-        <NoteModal
-          action={noteAction}
+        <ReasonModal
+          title={t(`admin.${noteAction.kind}Title`, { org: noteAction.org.name })}
+          subtitle={t(`admin.${noteAction.kind}Sub`)}
+          placeholder={t(`admin.${noteAction.kind}Placeholder`)}
+          confirmLabel={t(`admin.${noteAction.kind}`)}
           busy={busyId === noteAction.org.id}
           onClose={() => setNoteAction(null)}
           onConfirm={(note) => act(
@@ -136,40 +139,5 @@ export function AdminOrganizationsPage() {
         />
       )}
     </div>
-  );
-}
-
-function NoteModal({ action, busy, onClose, onConfirm }: {
-  action: NoteAction; busy: boolean; onClose: () => void; onConfirm: (note: string) => void;
-}) {
-  const { t } = useI18n();
-  const [note, setNote] = useState('');
-  const [error, setError] = useState('');
-
-  const confirm = () => {
-    if (!note.trim()) return setError(t('admin.noteRequired'));
-    onConfirm(note.trim());
-  };
-
-  return (
-    <Modal
-      title={t(`admin.${action.kind}Title`, { org: action.org.name })}
-      subtitle={t(`admin.${action.kind}Sub`)}
-      onClose={onClose}
-      footer={<>
-        <button className="btn btn-ghost" onClick={onClose} disabled={busy}>{t('common.cancel')}</button>
-        <button className="btn btn-danger" onClick={confirm} disabled={busy}>{busy && <span className="spinner" />} {t(`admin.${action.kind}`)}</button>
-      </>}
-    >
-      <div className="form">
-        <label className="field">
-          <span>{t('admin.reason')} <span className="req">*</span></span>
-          <textarea className="input" rows={3} value={note} autoFocus
-            onChange={(e) => { setNote(e.target.value); setError(''); }}
-            placeholder={t(`admin.${action.kind}Placeholder`)} />
-        </label>
-        {error && <div className="form-error" role="alert">{error}</div>}
-      </div>
-    </Modal>
   );
 }

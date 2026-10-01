@@ -8,10 +8,12 @@ interface Props {
   onClose: () => void;
   children: ReactNode;
   footer: ReactNode;
+  /** Wider, for previews (e.g. a whole listing). */
+  wide?: boolean;
 }
 
 /** A dialog over the page. Escape or a click outside closes it. */
-export function Modal({ title, subtitle, onClose, children, footer }: Props) {
+export function Modal({ title, subtitle, onClose, children, footer, wide = false }: Props) {
   const { t } = useI18n();
 
   useEffect(() => {
@@ -22,7 +24,7 @@ export function Modal({ title, subtitle, onClose, children, footer }: Props) {
 
   return (
     <div className="modal-overlay" onClick={onClose}>
-      <div className="modal" role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.stopPropagation()}>
+      <div className={`modal ${wide ? 'modal-wide' : ''}`} role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.stopPropagation()}>
         <div className="modal-head">
           <div>
             <h2>{title}</h2>

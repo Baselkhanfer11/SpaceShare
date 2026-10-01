@@ -1,6 +1,7 @@
 import type { Lang } from '../i18n/dictionary';
 
-const locale = (lang: Lang) => (lang === 'ar' ? 'ar' : 'en-GB');
+// Western digits in Arabic too (-u-nu-latn), the same as prices and typed numbers.
+const locale = (lang: Lang) => (lang === 'ar' ? 'ar-u-nu-latn' : 'en-GB');
 
 /** "1 Oct 2026" (or the Arabic form). */
 export function formatDate(iso: string, lang: Lang) {

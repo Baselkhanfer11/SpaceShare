@@ -10,8 +10,8 @@ obj/
 [Rr]elease/
 TestResults/
 
-# Uploaded photos live in blob storage / on disk, not in git.
-**/Storage/uploads/
+# Uploaded files (warehouse photos…) live on disk / in blob storage, never in git.
+**/Storage/
 
 # ─────────────────────────────────────────────
 #  Node / Bun / Vite (frontend)
