@@ -1,27 +1,41 @@
-import { useEffect, useState } from 'react'
+import { Navigate, Route, Routes } from 'react-router-dom';
+import { useAuth } from './auth/AuthContext';
+import { isPlatformAdmin } from './auth/roles';
+import { Layout } from './components/Layout';
+import { AccountStatusPage } from './pages/AccountStatusPage';
+import { AdminOrganizationsPage } from './pages/AdminOrganizationsPage';
+import { HomePage } from './pages/HomePage';
+import { LoginPage } from './pages/LoginPage';
+import { RegisterPage } from './pages/RegisterPage';
+import { TeamPage } from './pages/TeamPage';
 
-type Health = { status: string; time: string }
-
-// Placeholder home page: shows whether the frontend can reach the API.
+// Three states: signed out → sign in / sign up; signed in but the organisation
+// isn't approved → its status; approved → the app.
 export default function App() {
-  const [health, setHealth] = useState<Health | null>(null)
-  const [error, setError] = useState('')
+  const { me, loading } = useAuth();
 
-  useEffect(() => {
-    fetch('/api/health')
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then(setHealth)
-      .catch((e: Error) => setError(e.message))
-  }, [])
+  if (loading) return <div className="boot"><span className="spinner" /></div>;
+
+  if (!me) {
+    return (
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+    );
+  }
+
+  if (me.organization.status !== 'Active') return <AccountStatusPage />;
 
   return (
-    <main className="placeholder">
-      <h1>SpaceShare</h1>
-      <p>Warehouse space, by the pallet, for as long as you need it.</p>
-      <p className="status">
-        API:{' '}
-        {health ? <span className="ok">connected</span> : error ? <span className="bad">not reachable ({error})</span> : 'checking…'}
-      </p>
-    </main>
-  )
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route path="team" element={<TeamPage />} />
+        {isPlatformAdmin(me.user.role) && <Route path="admin/organizations" element={<AdminOrganizationsPage />} />}
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Route>
+    </Routes>
+  );
 }

@@ -33,12 +33,31 @@ SpaceShare/
 - [Bun](https://bun.sh)
 - SQL Server
 
+### One-time setup: secrets
+Secrets never go in git. Locally they live in `dotnet user-secrets` (stored in your user profile,
+outside the repo). Inside `backend/SpaceShare.Api`:
+```bash
+dotnet user-secrets set "Jwt:Key" "<a long random string, at least 32 characters>"
+dotnet user-secrets set "Seed:AdminPassword" "<the platform admin's password>"
+```
+The first run creates the platform admin (`admin@spaceshare.local`, set in `appsettings.json`) with that
+password. After that you can remove `Seed:AdminPassword`.
+
 ### Run the backend
 ```bash
 cd backend/SpaceShare.Api
 dotnet run
 ```
-The API listens on `http://localhost:5030`.
+The API listens on `http://localhost:5030`. On startup it creates or updates the `SpaceShareDb`
+database by itself (EF Core migrations).
+
+### Run the tests
+```bash
+cd backend
+dotnet test
+```
+They run the real API on a throwaway in-memory database. The tenant-isolation tests prove one
+organisation can never see or change another's data.
 
 ### Run the frontend
 ```bash
@@ -49,7 +68,7 @@ bun run dev
 Open `http://localhost:5173`. Vite forwards every `/api` request to the backend.
 
 ## MVP milestones
-- [ ] 1. Foundation — organisations, users, roles, tenant isolation, sign-up and approval
+- [x] 1. Foundation — organisations, users, roles, tenant isolation, sign-up and approval
 - [ ] 2. Listings and search
 - [ ] 3. Booking
 - [ ] 4. Receiving and stock

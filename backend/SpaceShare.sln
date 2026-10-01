@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceShare.Api", "SpaceShare.Api\SpaceShare.Api.csproj", "{88BC3F85-E11D-4C66-A804-761961D68C7C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceShare.Api.Tests", "SpaceShare.Api.Tests\SpaceShare.Api.Tests.csproj", "{85040218-99E4-4009-93A2-07A1F0D7583E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,18 @@ Global
 		{88BC3F85-E11D-4C66-A804-761961D68C7C}.Release|x64.Build.0 = Release|Any CPU
 		{88BC3F85-E11D-4C66-A804-761961D68C7C}.Release|x86.ActiveCfg = Release|Any CPU
 		{88BC3F85-E11D-4C66-A804-761961D68C7C}.Release|x86.Build.0 = Release|Any CPU
+		{85040218-99E4-4009-93A2-07A1F0D7583E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85040218-99E4-4009-93A2-07A1F0D7583E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85040218-99E4-4009-93A2-07A1F0D7583E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{85040218-99E4-4009-93A2-07A1F0D7583E}.Debug|x64.Build.0 = Debug|Any CPU
+		{85040218-99E4-4009-93A2-07A1F0D7583E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{85040218-99E4-4009-93A2-07A1F0D7583E}.Debug|x86.Build.0 = Debug|Any CPU
+		{85040218-99E4-4009-93A2-07A1F0D7583E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85040218-99E4-4009-93A2-07A1F0D7583E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85040218-99E4-4009-93A2-07A1F0D7583E}.Release|x64.ActiveCfg = Release|Any CPU
+		{85040218-99E4-4009-93A2-07A1F0D7583E}.Release|x64.Build.0 = Release|Any CPU
+		{85040218-99E4-4009-93A2-07A1F0D7583E}.Release|x86.ActiveCfg = Release|Any CPU
+		{85040218-99E4-4009-93A2-07A1F0D7583E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
