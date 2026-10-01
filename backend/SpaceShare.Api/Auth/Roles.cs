@@ -18,6 +18,9 @@ public static class Roles
     // The roles that manage their organisation's team (for [Authorize(Roles = ...)]).
     public const string Owners = ProviderOwner + "," + ClientOwner;
 
+    // Everyone at a warehouse business (owners and staff).
+    public const string Providers = ProviderOwner + "," + ProviderStaff;
+
     /// <summary>The roles a member of this kind of organisation can have.</summary>
     public static string[] ForType(string organizationType) => organizationType switch
     {

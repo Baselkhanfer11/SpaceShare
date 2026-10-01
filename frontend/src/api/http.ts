@@ -47,4 +47,8 @@ export const api = {
   get: <T>(url: string) => request<T>(url),
   post: <T>(url: string, body: unknown) => request<T>(url, jsonInit('POST', body)),
   put: <T>(url: string, body: unknown) => request<T>(url, jsonInit('PUT', body)),
+  del: <T>(url: string) => request<T>(url, { method: 'DELETE' }),
+  // File upload — pass a FormData. Content-Type is left to the browser, which
+  // adds the multipart boundary itself.
+  postForm: <T>(url: string, form: FormData) => request<T>(url, { method: 'POST', body: form }),
 };

@@ -2,7 +2,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import { isPlatformAdmin } from '../auth/roles';
 import { useI18n } from '../i18n/LanguageContext';
-import { BuildingIcon, HomeIcon, LogOutIcon, LogoIcon, UsersIcon } from './icons';
+import { BuildingIcon, HomeIcon, LogOutIcon, LogoIcon, SearchIcon, UsersIcon, WarehouseIcon } from './icons';
 import { Prefs } from './Prefs';
 
 /** The app frame once signed in and approved: top bar, navigation, the page. */
@@ -20,8 +20,16 @@ export function Layout() {
           <div className="brand"><span className="brand-mark"><LogoIcon /></span>SpaceShare</div>
           <nav className="nav" aria-label={t('nav.label')}>
             <NavLink to="/" end className={link}><HomeIcon /> {t('nav.home')}</NavLink>
-            {isPlatformAdmin(me.user.role) && (
+            {/* Each side of the marketplace sees its own tools. */}
+            {me.organization.type === 'Provider' && (
+              <NavLink to="/warehouses" className={link}><WarehouseIcon /> {t('nav.warehouses')}</NavLink>
+            )}
+            {isPlatformAdmin(me.user.role) && <>
               <NavLink to="/admin/organizations" className={link}><BuildingIcon /> {t('nav.organizations')}</NavLink>
+              <NavLink to="/admin/listings" className={link}><WarehouseIcon /> {t('nav.listings')}</NavLink>
+            </>}
+            {me.organization.type !== 'Provider' && (
+              <NavLink to="/search" className={link}><SearchIcon /> {t('nav.search')}</NavLink>
             )}
             <NavLink to="/team" className={link}><UsersIcon /> {t('nav.team')}</NavLink>
           </nav>

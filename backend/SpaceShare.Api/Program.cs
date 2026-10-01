@@ -27,6 +27,9 @@ builder.Services.AddDbContext<AppDbContext>(options => options
 builder.Services.AddScoped<JwtTokenService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
+// ---- Warehouse photos (on disk for the MVP) ----
+builder.Services.AddSingleton<SpaceShare.Api.Services.PhotoStorage>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer();
 // Read the token settings when they're first needed (not now), so tests and
 // user-secrets can supply them.

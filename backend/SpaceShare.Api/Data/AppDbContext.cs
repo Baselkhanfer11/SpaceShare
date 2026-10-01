@@ -18,6 +18,9 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ITenantProvide
 {
     public DbSet<Organization> Organizations => Set<Organization>();
     public DbSet<User> Users => Set<User>();
+    public DbSet<Warehouse> Warehouses => Set<Warehouse>();
+    public DbSet<SpaceOffer> SpaceOffers => Set<SpaceOffer>();
+    public DbSet<WarehousePhoto> WarehousePhotos => Set<WarehousePhoto>();
 
     // The organisation this context may see (null = nobody signed in → nothing).
     // The filters read it on every query, so it's always the current request's value.
@@ -55,6 +58,51 @@ public class AppDbContext(DbContextOptions<AppDbContext> options, ITenantProvide
                 .WithMany(o => o.Users)
                 .HasForeignKey(u => u.OrganizationId)
                 .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<Warehouse>(e =>
+        {
+            e.Property(w => w.Name).HasMaxLength(200);
+            e.Property(w => w.City).HasMaxLength(100);
+            e.Property(w => w.Address).HasMaxLength(300);
+            e.Property(w => w.Description).HasMaxLength(2000);
+            e.Property(w => w.OpeningHours).HasMaxLength(200);
+            e.Property(w => w.Status).HasMaxLength(20);
+            e.Property(w => w.ReviewNote).HasMaxLength(1000);
+            e.HasIndex(w => new { w.Status, w.City }); // search: approved listings in a city
+
+            // A provider with warehouses can't be deleted.
+            e.HasOne(w => w.Organization)
+                .WithMany()
+                .HasForeignKey(w => w.OrganizationId)
+                .OnDelete(DeleteBehavior.Restrict);
+        });
+
+        modelBuilder.Entity<SpaceOffer>(e =>
+        {
+            e.Property(o => o.UnitType).HasMaxLength(20);
+            e.Property(o => o.Temperature).HasMaxLength(20);
+            e.Property(o => o.PricePerWeek).HasPrecision(18, 2);
+            e.Property(o => o.Notes).HasMaxLength(500);
+
+            // Offers are part of their warehouse.
+            e.HasOne(o => o.Warehouse)
+                .WithMany(w => w.Offers)
+                .HasForeignKey(o => o.WarehouseId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<WarehousePhoto>(e =>
+        {
+            e.Property(p => p.StoredName).HasMaxLength(100);
+            e.Property(p => p.ContentType).HasMaxLength(50);
+            e.HasIndex(p => p.StoredName).IsUnique();
+
+            // Photos are part of their warehouse (the files are removed in code).
+            e.HasOne(p => p.Warehouse)
+                .WithMany(w => w.Photos)
+                .HasForeignKey(p => p.WarehouseId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         // Every ITenantOwned entity only shows the current organisation's rows.

@@ -69,7 +69,7 @@ Open `http://localhost:5173`. Vite forwards every `/api` request to the backend.
 
 ## MVP milestones
 - [x] 1. Foundation — organisations, users, roles, tenant isolation, sign-up and approval
-- [ ] 2. Listings and search
+- [x] 2. Listings and search
 - [ ] 3. Booking
 - [ ] 4. Receiving and stock
 - [ ] 5. Outbound requests

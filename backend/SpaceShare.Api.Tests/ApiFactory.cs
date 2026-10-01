@@ -27,6 +27,9 @@ public class ApiFactory : WebApplicationFactory<Program>
 
     private readonly SqliteConnection _connection = new("DataSource=:memory:");
 
+    // Uploaded photos go to a throwaway folder, removed when the tests finish.
+    private readonly string _photos = Path.Combine(Path.GetTempPath(), $"spaceshare-test-photos-{Guid.NewGuid():N}");
+
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
         _connection.Open(); // the in-memory database lives as long as this connection
@@ -36,6 +39,7 @@ public class ApiFactory : WebApplicationFactory<Program>
         builder.UseSetting("Jwt:Key", "test-signing-key-that-is-long-enough-0123456789");
         builder.UseSetting("Seed:AdminEmail", AdminEmail);
         builder.UseSetting("Seed:AdminPassword", AdminPassword);
+        builder.UseSetting("Storage:PhotosPath", _photos);
 
         builder.ConfigureServices(services =>
         {
@@ -51,7 +55,11 @@ public class ApiFactory : WebApplicationFactory<Program>
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);
-        if (disposing) _connection.Dispose();
+        if (disposing)
+        {
+            _connection.Dispose();
+            if (Directory.Exists(_photos)) Directory.Delete(_photos, recursive: true);
+        }
     }
 
     // ---- helpers for the tests ----
