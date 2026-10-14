@@ -80,6 +80,8 @@ using (var scope = app.Services.CreateScope())
     if (app.Configuration["Database:Setup"] == "EnsureCreated") db.Database.EnsureCreated();
     else db.Database.Migrate();
     await DbSeeder.SeedAsync(scope.ServiceProvider);
+    // Example companies and listings, on your own machine only (needs Seed:DemoPassword).
+    if (app.Environment.IsDevelopment()) await DemoSeeder.SeedAsync(scope.ServiceProvider);
 }
 
 if (app.Environment.IsDevelopment())

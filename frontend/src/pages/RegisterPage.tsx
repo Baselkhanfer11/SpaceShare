@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import { AuthShell } from '../components/AuthShell';
 import { BoxIcon, WarehouseIcon } from '../components/icons';
@@ -9,12 +9,15 @@ import type { RegisterInput } from '../types';
 const MIN_PASSWORD = 8; // same rule as the API (AccountRules)
 
 type Side = RegisterInput['organizationType'];
+const SIDES: Side[] = ['Provider', 'Client'];
 
 export function RegisterPage() {
   const { register } = useAuth();
   const navigate = useNavigate();
   const { t } = useI18n();
-  const [side, setSide] = useState<Side | null>(null);
+  // The landing page's "I have space" / "I need space" buttons arrive with ?side= already chosen.
+  const [params] = useSearchParams();
+  const [side, setSide] = useState<Side | null>(() => SIDES.find((s) => s === params.get('side')) ?? null);
   const [form, setForm] = useState({ organizationName: '', city: '', phone: '', fullName: '', email: '', password: '' });
   const [error, setError] = useState('');
   const [busy, setBusy] = useState(false);

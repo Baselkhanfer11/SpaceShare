@@ -43,6 +43,27 @@ dotnet user-secrets set "Seed:AdminPassword" "<the platform admin's password>"
 The first run creates the platform admin (`admin@spaceshare.local`, set in `appsettings.json`) with that
 password. After that you can remove `Seed:AdminPassword`.
 
+### Optional: demo data
+To try the app with example companies and listings already in it, choose a password for the demo accounts:
+```bash
+dotnet user-secrets set "Seed:DemoPassword" "<a password for all demo accounts>"
+```
+The next `dotnet run` (Development only) adds them once. Every demo account signs in with that password;
+if you change it, the accounts switch to the new one the next time the API starts.
+
+| Account | Company | What it shows |
+|---------|---------|---------------|
+| `rami@demo.spaceshare.local` | Sahab Logistics Park (warehouse owner, Amman) | a live listing and a rejected one |
+| `omar@demo.spaceshare.local` | Sahab Logistics Park (warehouse staff) | the staff view |
+| `lina@demo.spaceshare.local` | Aqaba Gateway Storage (warehouse owner) | a live listing with chilled space |
+| `sami@demo.spaceshare.local` | Zarqa Cold Chain (warehouse owner) | a live listing and one waiting for review |
+| `nadia@demo.spaceshare.local` | Bayt Coffee Roasters (business, Amman) | searching for space |
+| `yousef@demo.spaceshare.local` | Bayt Coffee Roasters (business member) | a team member |
+| `khaled@demo.spaceshare.local` | Irbid Textile Co. (business) | searching for space |
+| `hiba@demo.spaceshare.local`, `tariq@demo.spaceshare.local` | companies waiting for approval | the admin's review queue |
+
+The demo photos come from `SpaceShare.Api/DemoData/photos`.
+
 ### Run the backend
 ```bash
 cd backend/SpaceShare.Api
@@ -66,6 +87,9 @@ bun install
 bun run dev
 ```
 Open `http://localhost:5173`. Vite forwards every `/api` request to the backend.
+
+Signed-out visitors land on the 3D landing page (`src/pages/LandingPage.tsx`, scene in `src/landing/`,
+built with three.js). Its warehouse, businesses and numbers are examples, not live data.
 
 ## MVP milestones
 - [x] 1. Foundation — organisations, users, roles, tenant isolation, sign-up and approval
