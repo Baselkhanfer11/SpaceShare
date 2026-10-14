@@ -50,6 +50,14 @@ public class PhotoStorage
         return name;
     }
 
+    /// <summary>Stores a copy of a JPEG already on disk (the demo data's photos) and returns its new name.</summary>
+    public string SaveCopy(string jpegPath)
+    {
+        var name = $"{Guid.NewGuid():N}.jpg";
+        File.Copy(jpegPath, Path.Combine(_root, name));
+        return name;
+    }
+
     /// <summary>Opens a stored photo for reading, or null if it's missing or the name looks wrong.</summary>
     public Stream? Open(string storedName)
     {

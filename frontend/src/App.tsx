@@ -6,6 +6,7 @@ import { AccountStatusPage } from './pages/AccountStatusPage';
 import { AdminListingsPage } from './pages/AdminListingsPage';
 import { AdminOrganizationsPage } from './pages/AdminOrganizationsPage';
 import { HomePage } from './pages/HomePage';
+import { LandingPage } from './pages/LandingPage';
 import { ListingPage } from './pages/ListingPage';
 import { LoginPage } from './pages/LoginPage';
 import { MyWarehousesPage } from './pages/MyWarehousesPage';
@@ -14,8 +15,8 @@ import { SearchPage } from './pages/SearchPage';
 import { TeamPage } from './pages/TeamPage';
 import { WarehouseEditorPage } from './pages/WarehouseEditorPage';
 
-// Three states: signed out → sign in / sign up; signed in but the organisation
-// isn't approved → its status; approved → the app.
+// Three states: signed out → the landing page, sign in, sign up; signed in but the
+// organisation isn't approved → its status; approved → the app.
 export default function App() {
   const { me, loading } = useAuth();
 
@@ -24,9 +25,10 @@ export default function App() {
   if (!me) {
     return (
       <Routes>
+        <Route index element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     );
   }
